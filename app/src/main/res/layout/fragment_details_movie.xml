@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -70,6 +71,15 @@
                 app:layout_constraintEnd_toEndOf="@id/details_name"
                 app:layout_constraintStart_toStartOf="@id/details_name"
                 app:layout_constraintTop_toBottomOf="@id/reiting_title" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_actors"
+                android:layout_width="wrap_content"
+                tools:listitem="@layout/item_actor"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/reiting"
+                app:layout_constraintStart_toStartOf="parent"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="actor"
+            type="com.example.tmdbmovies.data.Cast" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/popular_film_image"
+                url="@{actor.profilePath}"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@{actor.profilePath}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/popular_film_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{actor.name}"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@id/popular_film_image"
+                app:layout_constraintTop_toBottomOf="@id/popular_film_image" />
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

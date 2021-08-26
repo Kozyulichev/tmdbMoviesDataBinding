@@ -6,10 +6,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val API_KEY = "eaa99c6fd63b5488a4816703a57c78f7"
-private const val BASE_URL = "https://api.themoviedb.org/3/movie/"
+private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 interface Repository {
     suspend fun getMovie(language: String): Movie
+    suspend fun getActors(filmId: Int?, language: String):Actors
 }
 
 class RepositoryImpl : Repository {
@@ -27,6 +28,10 @@ class RepositoryImpl : Repository {
 
     override suspend fun getMovie(language: String): Movie {
         return movieAPI.getMovieRetrofit(API_KEY, language)
+    }
+
+    override suspend fun getActors(filmId: Int?, language: String):Actors{
+        return movieAPI.getActors(filmId, API_KEY,language)
     }
 }
 
