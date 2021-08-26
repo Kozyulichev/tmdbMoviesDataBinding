@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.tmdbmovies.ui.main.DetailsMovieFragmentViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/details_image"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:src="@{viewModel.movie.poster_path}"
+                url="@{viewModel.movie.poster_path}"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/details_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="35sp"
+                android:text="@{viewModel.movie.title}"
+                app:layout_constraintEnd_toEndOf="@id/details_image"
+                app:layout_constraintStart_toStartOf="@id/details_image"
+                app:layout_constraintTop_toBottomOf="@id/details_image" />
+
+            <TextView
+                android:id="@+id/details_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.movie.overview}"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/details_name"
+                app:layout_constraintStart_toStartOf="@id/details_name"
+                app:layout_constraintTop_toBottomOf="@id/details_name" />
+
+            <TextView
+                android:id="@+id/reiting_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/reiting_name"
+                android:gravity="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/details_name"
+                app:layout_constraintStart_toStartOf="@id/details_name"
+                app:layout_constraintTop_toBottomOf="@id/details_description" />
+
+            <TextView
+                android:id="@+id/reiting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                toString="@{viewModel.movie.vote_average}"
+                android:gravity="center"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="@id/details_name"
+                app:layout_constraintStart_toStartOf="@id/details_name"
+                app:layout_constraintTop_toBottomOf="@id/reiting_title" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>
