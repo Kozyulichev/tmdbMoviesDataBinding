@@ -1,6 +1,10 @@
 package com.example.tmdbmovies.ui.main
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tmdbmovies.R
@@ -20,6 +25,7 @@ import com.example.tmdbmovies.data.RepositoryImpl
 import com.example.tmdbmovies.data.Result
 import com.example.tmdbmovies.databinding.FragmentDetailsMovieBinding
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,6 +60,7 @@ class DetailsMovieFragment() : Fragment() {
         recyclerView = view?.findViewById(R.id.recycler_actors)!!
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context,LinearLayout.HORIZONTAL,false)
+        var itemDecorator = DividerItemDecoration(recyclerView.context,layoutManager.orientation)
         recyclerView.layoutManager = layoutManager
         recyclerAdapter.setFilms(actors)
         recyclerView.adapter = recyclerAdapter
@@ -89,4 +96,35 @@ class DetailsMovieFragmentViewModel(private val liveData: MutableLiveData<Actors
             liveData.postValue(actorsData)
         }
     }
+}
+class CircleTransformation:Transformation{
+    override fun transform(source: Bitmap): Bitmap {
+        // Определяем шаблон обрезки...
+        val path = Path()
+        // ...как круг
+        path.addCircle(
+            (source.width / 2).toFloat(),
+            (source.height / 2).toFloat(),
+            (source.width / 2).toFloat(),
+            Path.Direction.CCW
+        )
+        // Создаём битмап, который и будет результирующим
+        val answerBitMap =
+            Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
+        // Создаём холст для нового битмапа
+        val canvas = Canvas(answerBitMap)
+        // Обрезаем холст по кругу (по шаблону)
+        canvas.clipPath(path)
+        // А теперь рисуем на этом холсте исходное изображение
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(source, 0f, 0f, paint)
+        source.recycle()
+        return answerBitMap
+
+    }
+
+    override fun key(): String {
+        return "circle"
+    }
+
 }

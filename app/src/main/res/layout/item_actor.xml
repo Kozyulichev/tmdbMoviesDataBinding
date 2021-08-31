@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/popular_film_image"
-                url="@{actor.profilePath}"
+                urlActors="@{actor.profilePath}"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@{actor.profilePath}"

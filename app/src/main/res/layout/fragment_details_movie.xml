@@ -16,14 +16,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/details_image"
+                url="@{viewModel.movie.poster_path}"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:src="@{viewModel.movie.poster_path}"
-                url="@{viewModel.movie.poster_path}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -31,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="35sp"
                 android:text="@{viewModel.movie.title}"
+                android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="@id/details_image"
                 app:layout_constraintStart_toStartOf="@id/details_image"
                 app:layout_constraintTop_toBottomOf="@id/details_image" />
@@ -41,9 +41,9 @@
                 android:id="@+id/details_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.movie.overview}"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
+                android:text="@{viewModel.movie.overview}"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@id/details_name"
                 app:layout_constraintStart_toStartOf="@id/details_name"
@@ -54,8 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/reiting_name"
                 android:gravity="center"
+                android:text="@string/reiting_name"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@id/details_name"
                 app:layout_constraintStart_toStartOf="@id/details_name"
@@ -63,23 +63,34 @@
 
             <TextView
                 android:id="@+id/reiting"
+                toString="@{viewModel.movie.vote_average}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                toString="@{viewModel.movie.vote_average}"
                 android:gravity="center"
                 android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="@id/details_name"
                 app:layout_constraintStart_toStartOf="@id/details_name"
                 app:layout_constraintTop_toBottomOf="@id/reiting_title" />
 
+            <TextView
+                android:id="@+id/actors_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Актеры:"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/details_name"
+                app:layout_constraintStart_toStartOf="@id/details_name"
+                app:layout_constraintTop_toBottomOf="@id/reiting" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_actors"
                 android:layout_width="wrap_content"
-                tools:listitem="@layout/item_actor"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/reiting"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actors_head"
+                tools:listitem="@layout/item_actor" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

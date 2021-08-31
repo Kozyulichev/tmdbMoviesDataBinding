@@ -1,29 +1,25 @@
 package com.example.tmdbmovies.ui.main
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tmdbmovies.R
-import com.example.tmdbmovies.data.Movie
-import com.example.tmdbmovies.data.RepositoryImpl
-import com.example.tmdbmovies.data.Result
-import com.example.tmdbmovies.databinding.MainFragmentBinding
+import com.example.tmdbmovies.data.*
+import com.example.tmdbmovies.databinding.FragmentCategoryFilmBinding
+import com.example.tmdbmovies.databinding.FragmentDetailsMovieBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
+class CategoryFilmFragment : Fragment() {
 
     private val lambdaNewViewInternet = { film: Result ->
         val manager = activity?.supportFragmentManager
@@ -39,21 +35,23 @@ class MainFragment : Fragment() {
                 .commitAllowingStateLoss()
         }
     }
+
+    private lateinit var binding: FragmentCategoryFilmBinding
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(CategoryFilmViewModel::class.java)
+    }
     lateinit var recyclerView: RecyclerView
     var recyclerAdapter = FilmAdapter(lambdaNewViewInternet)
-
-    private lateinit var binding: MainFragmentBinding
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = MainFragmentBinding.inflate(inflater, container, false)
+    ): View? {
+        binding = FragmentCategoryFilmBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        viewModel.category.value =
+            arguments?.getParcelable<Genres>(CategoryFilmFragment.BUNDLE_EXTRA_CATEGORY)
         return binding.root
     }
 
@@ -64,39 +62,43 @@ class MainFragment : Fragment() {
     }
 
     private fun initRecyclerView(movie: Movie) {
-        recyclerView = view?.findViewById(R.id.recycler)!!
+        recyclerView = view?.findViewById(R.id.recycler_category_film)!!
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerAdapter.setFilms(movie)
         recyclerView.adapter = recyclerAdapter
     }
+
+    companion object {
+
+        const val BUNDLE_EXTRA_CATEGORY = "category"
+
+        fun newInstance(category: Bundle): CategoryFilmFragment {
+            val fragment = CategoryFilmFragment()
+            fragment.arguments = category
+            return fragment
+        }
+    }
 }
 
-
-class MainViewModel(private val liveData: MutableLiveData<Movie> = MutableLiveData()) :
+class CategoryFilmViewModel(private val liveData: MutableLiveData<Movie> = MutableLiveData()) :
     ViewModel() {
-    private val scope = CoroutineScope(Dispatchers.Main)
-    val movie = MutableLiveData<Movie>()
-    private val repository = RepositoryImpl()
-    val movieIsLoading = MutableLiveData(false)
-
+    val category = MutableLiveData<Genres>()
+    val scope = CoroutineScope(Dispatchers.IO)
     fun getLiveData() = liveData
-
+    private val repository = RepositoryImpl()
 
     init {
-        loadMovie()
+        loadMovieByCategory()
     }
 
-    private fun loadMovie() {
+    fun loadMovieByCategory() {
         scope.launch {
-            movieIsLoading.postValue(true)
-            val movieData = repository.getMovie("ru-RU")
-            liveData.postValue(movieData)
-            movie.postValue(movieData)
-            movieIsLoading.postValue(false)
+            val id = category.value?.id
+            val movie = repository.getMovieByCategory("ru-RU", id!!)
+            liveData.postValue(movie)
         }
     }
 
 }
-

@@ -10,7 +10,9 @@ private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 interface Repository {
     suspend fun getMovie(language: String): Movie
-    suspend fun getActors(filmId: Int?, language: String):Actors
+    suspend fun getActors(filmId: Int?, language: String): Actors
+    suspend fun getCategory(language: String): Category
+    suspend fun getMovieByCategory(language: String, category: Int): Movie
 }
 
 class RepositoryImpl : Repository {
@@ -30,8 +32,16 @@ class RepositoryImpl : Repository {
         return movieAPI.getMovieRetrofit(API_KEY, language)
     }
 
-    override suspend fun getActors(filmId: Int?, language: String):Actors{
-        return movieAPI.getActors(filmId, API_KEY,language)
+    override suspend fun getActors(filmId: Int?, language: String): Actors {
+        return movieAPI.getActors(filmId, API_KEY, language)
+    }
+
+    override suspend fun getCategory(language: String): Category {
+        return movieAPI.getCategory(API_KEY, language)
+    }
+
+    override suspend fun getMovieByCategory(language: String, category: Int): Movie {
+        return movieAPI.getMovieByCategoryRetrofit(API_KEY, language, category)
     }
 }
 
